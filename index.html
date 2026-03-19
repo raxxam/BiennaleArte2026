@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#2C2C2C">
+<title>Biennale Arte 2026 — Venue Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root {
+  --warm:#F6F3EE; --dark:#1E1E1E; --accent:#5A4E3C;
+  --gray:#8A8078; --rule:#D0CBC3; --hdr:#2C2C2C;
+  --it:#7A6E65; --red:#C0392B; --muted:#B0A89E;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--warm);}
+body{font-family:'Poppins',sans-serif;color:var(--dark);display:flex;flex-direction:column;}
+
+/* ── HEADER ── */
+header{background:var(--hdr);height:52px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:relative;z-index:600;}
+.htitle{font-family:'Lora',serif;font-size:14px;font-style:italic;color:#F6F3EE;}
+.hsub{font-size:9.5px;font-weight:300;color:#999;letter-spacing:.06em;text-transform:uppercase;margin-left:12px;}
+.hright{font-size:9px;font-weight:300;color:#888;letter-spacing:.04em;}
+
+/* ── LAYOUT ── */
+.main{display:flex;flex:1;overflow:hidden;min-height:0;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:280px;flex-shrink:0;background:var(--warm);border-right:1px solid var(--rule);display:flex;flex-direction:column;overflow:hidden;transition:transform .28s ease;}
+
+/* Mobile: sidebar slides in from left as sheet */
+@media(max-width:680px){
+  .sidebar{position:fixed;top:52px;left:0;bottom:0;z-index:500;width:88vw;max-width:320px;transform:translateX(-100%);box-shadow:4px 0 24px rgba(0,0,0,.18);}
+  .sidebar.open{transform:translateX(0);}
+  .map-toggle{display:flex!important;}
+  .hright{display:none;}
+}
+
+.sb-head{padding:13px 16px 9px;border-bottom:1px solid var(--rule);flex-shrink:0;}
+.sb-head h2{font-family:'Lora',serif;font-size:12px;font-weight:400;color:var(--accent);margin-bottom:1px;}
+.sb-head p{font-size:9px;font-weight:300;color:var(--gray);font-style:italic;}
+
+.filters{display:flex;gap:4px;padding:8px 16px;border-bottom:1px solid var(--rule);flex-shrink:0;flex-wrap:wrap;}
+.fbtn{font-size:9px;font-weight:500;padding:4px 10px;border-radius:20px;border:1px solid var(--rule);background:transparent;color:var(--gray);cursor:pointer;transition:all .13s;font-family:'Poppins',sans-serif;-webkit-appearance:none;}
+.fbtn:hover{background:rgba(90,78,60,.08);color:var(--accent);border-color:var(--accent);}
+.fbtn.on{background:var(--accent);color:#F6F3EE;border-color:var(--accent);}
+
+.elist{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;}
+.elist::-webkit-scrollbar{width:3px;}
+.elist::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px;}
+
+.dgroup{margin-bottom:2px;}
+.dlabel{font-family:'Lora',serif;font-size:9px;font-weight:600;color:var(--accent);padding:8px 16px 3px;letter-spacing:.05em;text-transform:uppercase;}
+
+.eitem{display:flex;align-items:flex-start;gap:8px;padding:7px 16px;cursor:pointer;border-left:2px solid transparent;transition:all .12s;-webkit-user-select:none;user-select:none;}
+.eitem:active{background:rgba(90,78,60,.12);}
+.eitem:hover{background:rgba(90,78,60,.05);border-left-color:var(--rule);}
+.eitem.on{background:rgba(90,78,60,.09);border-left-color:var(--accent);}
+.eitem.tent{opacity:.6;}
+
+.etime{font-size:9px;font-weight:600;color:var(--dark);min-width:30px;padding-top:1px;letter-spacing:.02em;}
+.econtent{flex:1;min-width:0;}
+.ename{font-size:11px;color:var(--dark);line-height:1.3;margin-bottom:1px;}
+.ename-it{font-size:9px;font-style:italic;color:var(--it);line-height:1.2;margin-bottom:2px;}
+.eloc{font-size:8.5px;font-weight:300;color:var(--gray);font-style:italic;line-height:1.2;}
+.pdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.pdot.a{background:var(--red);}
+.pdot.p{background:var(--muted);}
+
+/* ── MAP ── */
+.mapwrap{flex:1;position:relative;min-width:0;}
+#map{width:100%;height:100%;}
+
+/* Mobile overlay toggle button */
+.map-toggle{display:none;position:fixed;bottom:24px;left:16px;z-index:550;background:var(--hdr);color:#F6F3EE;border:none;border-radius:24px;padding:10px 18px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;cursor:pointer;box-shadow:0 3px 14px rgba(0,0,0,.25);align-items:center;gap:8px;-webkit-appearance:none;}
+.map-toggle svg{width:14px;height:14px;fill:none;stroke:#F6F3EE;stroke-width:2;}
+
+/* Overlay backdrop on mobile */
+.backdrop{display:none;position:fixed;inset:0;z-index:490;background:rgba(0,0,0,.35);}
+.backdrop.show{display:block;}
+
+/* Legend */
+.legend{position:absolute;bottom:20px;right:12px;background:rgba(246,243,238,.95);border:1px solid var(--rule);border-radius:8px;padding:9px 12px;z-index:400;font-size:9px;}
+.leg-title{font-family:'Lora',serif;font-size:8.5px;font-style:italic;color:var(--accent);margin-bottom:5px;font-weight:600;}
+.leg-row{display:flex;align-items:center;gap:5px;margin-bottom:3px;color:var(--gray);}
+.leg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* Offline fallback */
+#offline{display:none;position:absolute;inset:0;z-index:450;align-items:center;justify-content:center;background:rgba(246,243,238,.93);}
+#offline.show{display:flex;}
+.off-card{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:24px 28px;text-align:center;max-width:300px;margin:16px;}
+.off-card h3{font-family:'Lora',serif;font-size:14px;color:var(--accent);margin-bottom:8px;}
+.off-card p{font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:12px;}
+.off-card a{font-size:11px;font-weight:500;color:var(--red);text-decoration:none;border:1px solid rgba(192,57,43,.3);border-radius:5px;padding:5px 12px;display:inline-block;}
+
+/* Leaflet overrides */
+.leaflet-control-zoom{border:none!important;box-shadow:0 1px 8px rgba(30,30,30,.12)!important;}
+.leaflet-control-zoom a{background:#F6F3EE!important;color:var(--dark)!important;border-color:var(--rule)!important;width:32px!important;height:32px!important;line-height:32px!important;}
+.leaflet-control-attribution{font-size:8.5px!important;background:rgba(246,243,238,.85)!important;color:var(--gray)!important;}
+.leaflet-popup-content-wrapper{background:#FDFBF8!important;border-radius:8px!important;box-shadow:0 4px 20px rgba(30,30,30,.15)!important;border:1px solid var(--rule)!important;padding:0!important;}
+.leaflet-popup-content{margin:0!important;min-width:200px;}
+.leaflet-popup-tip-container{display:none;}
+.leaflet-popup-close-button{color:var(--gray)!important;top:7px!important;right:8px!important;font-size:18px!important;width:20px!important;height:20px!important;line-height:20px!important;}
+
+.pop-inner{padding:12px 14px 10px;}
+.pop-venue{font-family:'Lora',serif;font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:7px;padding-right:14px;line-height:1.3;}
+.pop-ev{border-top:1px solid var(--rule);padding:5px 0 3px;}
+.pop-ev:first-of-type{border-top:none;padding-top:0;}
+.pop-day{font-size:7.5px;font-weight:500;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;}
+.pop-row{display:flex;align-items:baseline;gap:5px;}
+.pop-time{font-size:9px;font-weight:600;color:var(--dark);min-width:26px;}
+.pop-name{font-size:10.5px;color:var(--dark);line-height:1.3;}
+.pop-it{font-size:9px;font-style:italic;color:var(--it);padding-left:31px;margin-top:1px;}
+.pop-addr{font-size:8px;font-weight:300;color:var(--gray);font-style:italic;margin-top:5px;}
+.pop-gm{display:inline-block;margin-top:6px;font-size:9px;font-weight:500;color:var(--red);text-decoration:none;border:1px solid rgba(192,57,43,.3);border-radius:4px;padding:3px 8px;}
+
+.mkr{display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 2px 5px rgba(30,30,30,.22));}
+.mkr-b{background:var(--hdr);color:#F6F3EE;border-radius:5px;padding:2px 7px;font-family:'Poppins',sans-serif;font-size:9px;font-weight:500;white-space:nowrap;}
+.mkr-b.ph{background:var(--muted);}
+.mkr-s{width:2px;height:5px;background:var(--hdr);}
+.mkr-s.ph{background:var(--muted);}
+.mkr-d{width:5px;height:5px;border-radius:50%;background:var(--hdr);}
+.mkr-d.ph{background:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:baseline;">
+    <span class="htitle">In Minor Keys</span>
+    <span class="hsub">Biennale Arte 2026</span>
+  </div>
+  <span class="hright">6–8 Maggio / May · Swiss 5 Group</span>
+</header>
+
+<div class="backdrop" id="backdrop" onclick="closeSidebar()"></div>
+
+<div class="main">
+  <div class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <h2>Programme Venues</h2>
+      <p>Tutte le location del programma</p>
+    </div>
+    <div class="filters">
+      <button class="fbtn on" onclick="filterDay('all',this)">All</button>
+      <button class="fbtn" onclick="filterDay('tue',this)">Tue 5</button>
+      <button class="fbtn" onclick="filterDay('wed',this)">Wed 6</button>
+      <button class="fbtn" onclick="filterDay('thu',this)">Thu 7</button>
+      <button class="fbtn" onclick="filterDay('fri',this)">Fri 8</button>
+    </div>
+    <div class="elist" id="elist"></div>
+  </div>
+
+  <div class="mapwrap">
+    <div id="map"></div>
+    <div id="offline">
+      <div class="off-card">
+        <h3>No internet connection</h3>
+        <p>The map needs an internet connection to load. Please open this file in a browser while online.</p>
+        <a href="https://maps.google.com/?q=Lido+di+Venezia" target="_blank">Open in Google Maps ↗</a>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="leg-title">Legend / Legenda</div>
+      <div class="leg-row"><div class="leg-dot" style="background:#2C2C2C"></div>Confirmed venue</div>
+      <div class="leg-row"><div class="leg-dot" style="background:#B0A89E"></div>Venue to follow</div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile toggle button -->
+<button class="map-toggle" id="toggle" onclick="toggleSidebar()">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  Programme
+</button>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+// Via Perasto 12, Lido di Venezia: corrected coords (lagoon-side, near Gran Viale / SME ferry)
+const VP_LAT = 45.417297, VP_LNG = 12.371199;
+const VP_ADDR = 'Via Perasto 12, Lido di Venezia';
+const VP_URL  = 'https://maps.google.com/?q=Via+Perasto+12,+Lido+di+Venezia';
+
+const EVENTS = [
+  {day:'tue',dl:'Tuesday 5 May',dlit:'Martedì 5 Maggio',time:'20:00',en:'Welcome Dinner',it:'Cena di Benvenuto',venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
+  {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'09:00',en:'Breakfast — Intro by Jennifer Braun',it:'Colazione — Introduzione di Jennifer Braun',venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
+  {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'11:30',en:'Guided Tour — International Exhibition',it:'Visita Guidata — Esposizione Internazionale',venue:'Giardini & Arsenale',addr:'Giardini della Biennale, Venezia',lat:45.4289,lng:12.3601,url:'https://maps.google.com/?q=Giardini+della+Biennale,+Venice',ok:true},
+  {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'16:00',en:'Julian Charrière',it:'Julian Charrière',venue:'Venue to follow',addr:'Luogo da confermare',lat:45.4341,lng:12.3388,url:null,ok:false,tent:true},
+  {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'19:00',en:'Martha Graham Dance Company',it:'Martha Graham Dance Company',venue:'Teatro La Fenice',addr:'Campo San Fantin 1965, Venezia',lat:45.4335,lng:12.3317,url:'https://maps.google.com/?q=Teatro+La+Fenice,+Campo+San+Fantin+1965,+Venezia',ok:true,tent:true},
+  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'09:00',en:'Breakfast / Together',it:'Colazione / Insieme',venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true,tent:true},
+  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'11:30',en:'National Pavilions & Collateral Events',it:'Padiglioni Nazionali & Collateral Events',venue:'Giardini & Arsenale',addr:'Giardini della Biennale, Venezia',lat:45.4289,lng:12.3601,url:'https://maps.google.com/?q=Giardini+della+Biennale,+Venice',ok:true},
+  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'20:00',en:'Dinner',it:'Cena',venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
+  {day:'fri',dl:'Friday 8 May',dlit:'Venerdì 8 Maggio',time:'09:00',en:'Breakfast',it:'Colazione',venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
+  {day:'fri',dl:'Friday 8 May',dlit:'Venerdì 8 Maggio',time:'11:30',en:'Programme to follow',it:'Programma da confermare',venue:'Venue to follow',addr:'Luogo da confermare',lat:45.4341,lng:12.3388,url:null,ok:false,tent:true}
+];
+
+// Group by venue
+const groups={};
+EVENTS.forEach(ev=>{
+  const k=ev.venue+'|'+ev.lat+'|'+ev.lng;
+  if(!groups[k]) groups[k]={...ev,events:[]};
+  groups[k].events.push(ev);
+});
+
+// ── MAP ───────────────────────────────────────────────────────────────────────
+const map=L.map('map',{
+  center:[45.423,12.355],zoom:13,
+  zoomControl:true,
+  tap:true,           // iOS touch support
+  tapTolerance:15
+});
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains:'abcd',maxZoom:19
+}).addTo(map);
+
+// Offline detection
+// Only show offline message if tiles actively fail to load (not just slow)
+let tileErrors=0, tileSuccesses=0;
+map.on('tileload',()=>{ tileSuccesses++; tileErrors=0; });
+map.on('tileerror',()=>{
+  tileErrors++;
+  // Only trigger if we get multiple consecutive errors and zero successes
+  if(tileErrors>=4 && tileSuccesses===0){
+    document.getElementById('offline').classList.add('show');
+  }
+});
+
+// ── MARKERS ───────────────────────────────────────────────────────────────────
+const markers={}, markerDays={};
+
+Object.entries(groups).forEach(([k,v])=>{
+  const ph=!v.events.some(e=>e.ok);
+  const icon=L.divIcon({
+    className:'',
+    html:`<div class="mkr"><div class="mkr-b${ph?' ph':''}">${v.venue}</div><div class="mkr-s${ph?' ph':''}"></div><div class="mkr-d${ph?' ph':''}"></div></div>`,
+    iconAnchor:[0,24], popupAnchor:[65,-16]
+  });
+
+  const evHtml=v.events.map(ev=>`
+    <div class="pop-ev">
+      <div class="pop-day">${ev.dl}</div>
+      <div class="pop-row"><span class="pop-time">${ev.time}</span><span class="pop-name">${ev.en}</span></div>
+      <div class="pop-it">${ev.it}</div>
+    </div>`).join('');
+
+  const gmBtn=v.url?`<a class="pop-gm" href="${v.url}" target="_blank">Open in Google Maps ↗</a>`:'';
+  const popup=`<div class="pop-inner"><div class="pop-venue">${v.venue}</div>${evHtml}<div class="pop-addr">${v.addr}</div>${gmBtn}</div>`;
+
+  const m=L.marker([v.lat,v.lng],{icon})
+    .addTo(map)
+    .bindPopup(popup,{maxWidth:260,minWidth:200});
+  markers[k]=m;
+
+  v.events.forEach(ev=>{
+    if(!markerDays[ev.day]) markerDays[ev.day]=new Set();
+    markerDays[ev.day].add(k);
+  });
+});
+
+// ── SIDEBAR ───────────────────────────────────────────────────────────────────
+function renderSidebar(df){
+  const days={};
+  EVENTS.forEach(ev=>{
+    if(df!=='all'&&ev.day!==df) return;
+    if(!days[ev.dl]) days[ev.dl]=[];
+    days[ev.dl].push(ev);
+  });
+  let h='';
+  Object.entries(days).forEach(([dl,evs])=>{
+    h+=`<div class="dgroup"><div class="dlabel">${dl}</div>`;
+    evs.forEach(ev=>{
+      const k=ev.venue+'|'+ev.lat+'|'+ev.lng;
+      h+=`<div class="eitem${ev.tent?' tent':''}" onclick="focusVenue('${k}')" data-key="${k}">
+        <div class="pdot ${ev.ok?'a':'p'}"></div>
+        <div class="etime">${ev.time}</div>
+        <div class="econtent">
+          <div class="ename">${ev.en}</div>
+          <div class="ename-it">${ev.it}</div>
+          ${ev.ok?`<div class="eloc">${ev.addr}</div>`:''}
+        </div>
+      </div>`;
+    });
+    h+='</div>';
+  });
+  document.getElementById('elist').innerHTML=h;
+}
+
+function focusVenue(k){
+  document.querySelectorAll('.eitem').forEach(el=>el.classList.remove('on'));
+  document.querySelectorAll(`[data-key="${k}"]`).forEach(el=>el.classList.add('on'));
+  const m=markers[k]; if(!m) return;
+  closeSidebar();
+  map.flyTo(m.getLatLng(),16,{duration:0.7});
+  setTimeout(()=>m.openPopup(),600);
+}
+
+function filterDay(d,btn){
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderSidebar(d);
+  Object.entries(markers).forEach(([k,m])=>{
+    (d==='all'||(markerDays[d]&&markerDays[d].has(k))) ? m.addTo(map) : map.removeLayer(m);
+  });
+  if(d!=='all'){
+    const keys=markerDays[d]?[...markerDays[d]]:[];
+    if(keys.length) map.flyToBounds(L.latLngBounds(keys.map(k=>markers[k].getLatLng())).pad(0.35),{duration:0.7});
+  } else {
+    map.flyTo([45.423,12.355],13,{duration:0.7});
+  }
+}
+
+// ── MOBILE SIDEBAR TOGGLE ─────────────────────────────────────────────────────
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar');
+  const bd=document.getElementById('backdrop');
+  const isOpen=sb.classList.contains('open');
+  sb.classList.toggle('open',!isOpen);
+  bd.classList.toggle('show',!isOpen);
+  document.getElementById('toggle').innerHTML=isOpen
+    ? '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:#F6F3EE;stroke-width:2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> Programme'
+    : '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:#F6F3EE;stroke-width:2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Close';
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('show');
+  document.getElementById('toggle').innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:#F6F3EE;stroke-width:2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> Programme';
+}
+
+// Fix Leaflet map size after any resize (critical for iOS)
+window.addEventListener('resize',()=>map.invalidateSize());
+
+renderSidebar('all');
+</script>
+</body>
+</html>
