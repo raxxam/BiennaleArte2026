@@ -197,6 +197,37 @@ const EVENTS = [
   {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'20:00',en:'Dinner',it:'Cena',venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
   {day:'fri',dl:'Friday 8 May',dlit:'Venerdì 8 Maggio',time:'09:00',en:'Breakfast',it:'Colazione',venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
   {day:'fri',dl:'Friday 8 May',dlit:'Venerdì 8 Maggio',time:'11:30',en:'Programme to follow',it:'Programma da confermare',venue:'Venue to follow',addr:'Luogo da confermare',lat:45.4341,lng:12.3388,url:null,ok:false,tent:true}
+,
+  // ── ADDITIONAL EVENTS ────────────────────────────────────────────────────
+  {day:'tue',dl:'Tuesday 5 May',dlit:'Martedì 5 Maggio',time:'17:30',endtime:'20:00',
+   en:'LAS Art Foundation — VIP Reception',it:'LAS Art Foundation — Ricevimento VIP',
+   venue:'Ateneo Veneto',addr:'Campo San Fantin 1897, Venezia',
+   lat:45.4337,lng:12.3311,
+   url:'https://maps.app.goo.gl/2Xd8YCUBfnrtvGNE8',ok:true},
+
+  {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'14:00',endtime:'17:00',
+   en:'Peter Buggenhout & Axel Vervoordt — Gallery Private Visit',it:'Peter Buggenhout & Axel Vervoordt — Visita Privata',
+   venue:'Palazzo Pisani Moretta',addr:'Palazzo Pisani Moretta, San Polo, Venezia',
+   lat:45.43604,lng:12.32927,
+   url:'https://maps.app.goo.gl/yqfUKBiomA2fhPv7A',ok:true},
+
+  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'14:30',endtime:'17:00',
+   en:'LAS Art Foundation — Talk: Ethics in the Age of AI',it:'LAS Art Foundation — Talk: Etica nell'Era dell'IA',
+   venue:'Ateneo Veneto',addr:'Campo San Fantin 1897, Venezia',
+   lat:45.4337,lng:12.3311,
+   url:'https://maps.app.goo.gl/2Xd8YCUBfnrtvGNE8',ok:true},
+
+  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'17:00',endtime:'19:00',
+   en:'LAS Art Foundation — Art+Tech Aperitivo',it:'LAS Art Foundation — Aperitivo Art+Tech',
+   venue:'Al Theatro',addr:'Campo San Fantin, Venezia',
+   lat:45.4334,lng:12.3315,
+   url:'https://maps.app.goo.gl/qHxGZ8YczQQnQVye8',ok:true},
+
+  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'17:00',
+   en:'Kelterborn Collection — "Who's a Good Boy??"',it:'Kelterborn Collection — "Who's a Good Boy??"',
+   venue:'Contemporary Forces',addr:'Venezia',
+   lat:45.4352,lng:12.3358,
+   url:'https://maps.app.goo.gl/dWXMjMUic4NzGtBw7',ok:true},
 ];
 
 // Group by venue
@@ -209,7 +240,7 @@ EVENTS.forEach(ev=>{
 
 // ── MAP ───────────────────────────────────────────────────────────────────────
 const map=L.map('map',{
-  center:[45.423,12.355],zoom:13,
+  center:[45.430,12.345],zoom:13,
   zoomControl:true,
   tap:true,           // iOS touch support
   tapTolerance:15
@@ -279,7 +310,7 @@ function renderSidebar(df){
       const k=ev.venue+'|'+ev.lat+'|'+ev.lng;
       h+=`<div class="eitem${ev.tent?' tent':''}" onclick="focusVenue('${k}')" data-key="${k}">
         <div class="pdot ${ev.ok?'a':'p'}"></div>
-        <div class="etime">${ev.time}</div>
+        <div class="etime">${ev.time}${ev.endtime ? '–'+ev.endtime : ''}</div>
         <div class="econtent">
           <div class="ename">${ev.en}</div>
           <div class="ename-it">${ev.it}</div>
@@ -312,7 +343,7 @@ function filterDay(d,btn){
     const keys=markerDays[d]?[...markerDays[d]]:[];
     if(keys.length) map.flyToBounds(L.latLngBounds(keys.map(k=>markers[k].getLatLng())).pad(0.35),{duration:0.7});
   } else {
-    map.flyTo([45.423,12.355],13,{duration:0.7});
+    map.flyTo([45.430,12.345],13,{duration:0.7});
   }
 }
 
