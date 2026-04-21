@@ -187,57 +187,90 @@ const VP_ADDR = 'Via Perasto 12, Lido di Venezia';
 const VP_URL  = 'https://maps.google.com/?q=Via+Perasto+12,+Lido+di+Venezia';
 
 const EVENTS = [
+  {day:'tue',dl:'Tuesday 5 May',dlit:'Martedì 5 Maggio',time:'17:00',endtime:'20:00',
+   en:'Anish Kapoor — Palazzo Manfrin',it:'Anish Kapoor — Palazzo Manfrin',
+   venue:'Palazzo Manfrin',addr:'Fondamenta Venier, Cannaregio 342, Venezia',
+   lat:45.443849,lng:12.32483,
+   url:'https://maps.google.com/?q=Fondamenta+Venier+Cannaregio+342+Venezia',ok:true},
+
   {day:'tue',dl:'Tuesday 5 May',dlit:'Martedì 5 Maggio',time:'17:30',endtime:'20:00',
    en:'LAS Art Foundation — VIP Reception',it:'LAS Art Foundation — Ricevimento VIP',
    venue:'Ateneo Veneto',addr:'Campo San Fantin 1897, Venezia',
-   lat:45.4337,lng:12.3311,url:'https://maps.app.goo.gl/2Xd8YCUBfnrtvGNE8',ok:true},
+   lat:45.4337,lng:12.3311,
+   url:'https://maps.app.goo.gl/2Xd8YCUBfnrtvGNE8',ok:true},
+
   {day:'tue',dl:'Tuesday 5 May',dlit:'Martedì 5 Maggio',time:'20:00',
    en:'Welcome Dinner',it:'Cena di Benvenuto',
    venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
+
   {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'09:00',
    en:'Breakfast — Intro by Jennifer Braun',it:'Colazione — Introduzione di Jennifer Braun',
    venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
+
   {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'11:30',
    en:'Guided Tour — International Exhibition',it:'Visita Guidata — Esposizione Internazionale',
    venue:'Giardini & Arsenale',addr:'Giardini della Biennale, Venezia',
    lat:45.4289,lng:12.3601,url:'https://maps.google.com/?q=Giardini+della+Biennale,+Venice',ok:true},
+
   {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'14:00',endtime:'17:00',
    en:'Peter Buggenhout & Axel Vervoordt — Gallery Private Visit',it:'Peter Buggenhout & Axel Vervoordt — Visita Privata',
    venue:'Palazzo Pisani Moretta',addr:'Palazzo Pisani Moretta, San Polo, Venezia',
    lat:45.43604,lng:12.32927,url:'https://maps.app.goo.gl/yqfUKBiomA2fhPv7A',ok:true},
+
   {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'16:00',
    en:'Julian Charrière',it:'Julian Charrière',
    venue:'Venue to follow',addr:'Luogo da confermare',
    lat:45.4341,lng:12.3388,url:null,ok:false,tent:true},
+
+  {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'18:00',endtime:'23:00',
+   en:'Spiral Economy — Private Viewing & Dinner',it:'Spiral Economy — Visione Privata & Cena',
+   venue:'Museo Correr',addr:'Piazza San Marco 52, Venezia',
+   lat:45.4340,lng:12.3380,
+   url:'https://maps.google.com/?q=Museo+Correr+Piazza+San+Marco+52+Venezia',ok:true},
+
   {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'19:00',
    en:'Martha Graham Dance Company',it:'Martha Graham Dance Company',
    venue:'Teatro La Fenice',addr:'Campo San Fantin 1965, Venezia',
    lat:45.4335,lng:12.3317,url:'https://maps.google.com/?q=Teatro+La+Fenice,+Campo+San+Fantin+1965,+Venezia',ok:true,tent:true},
+
   {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'09:00',
    en:'Breakfast / Together',it:'Colazione / Insieme',
    venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true,tent:true},
+
   {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'11:30',
    en:'National Pavilions & Collateral Events',it:'Padiglioni Nazionali & Collateral Events',
    venue:'Giardini & Arsenale',addr:'Giardini della Biennale, Venezia',
    lat:45.4289,lng:12.3601,url:'https://maps.google.com/?q=Giardini+della+Biennale,+Venice',ok:true},
+
   {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'14:30',endtime:'17:00',
    en:'LAS Art Foundation — Talk: Ethics in the Age of AI',it:'LAS Art Foundation — Etica nell’Era dell’IA',
    venue:'Ateneo Veneto',addr:'Campo San Fantin 1897, Venezia',
    lat:45.4337,lng:12.3311,url:'https://maps.app.goo.gl/2Xd8YCUBfnrtvGNE8',ok:true},
+
   {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'17:00',endtime:'19:00',
    en:'LAS Art Foundation — Art+Tech Aperitivo',it:'LAS Art Foundation — Aperitivo Art+Tech',
    venue:'Al Theatro',addr:'Campo San Fantin, Venezia',
    lat:45.4334,lng:12.3315,url:'https://maps.app.goo.gl/qHxGZ8YczQQnQVye8',ok:true},
+
   {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'17:00',
    en:"Kelterborn Collection — Who's a Good Boy??",it:"Kelterborn Collection — Who's a Good Boy??",
    venue:'Contemporary Forces',addr:'Venezia',
-   lat:45.42655,lng:12.32169,url:'https://maps.app.goo.gl/dWXMjMUic4NzGtBw7',ok:true},
+   lat:45.4267049,lng:12.3216101,url:'https://maps.app.goo.gl/dWXMjMUic4NzGtBw7',ok:true},
+
+  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'19:30',endtime:'24:00',
+   en:'Swiss Arts Council Pro Helvetia',it:'Swiss Arts Council Pro Helvetia',
+   venue:'San Servolo Island',addr:'Isola di San Servolo, Venezia',
+   lat:45.41861,lng:12.35736,
+   url:'https://maps.google.com/?q=San+Servolo+Island+Venice',ok:true},
+
   {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'20:00',
    en:'Dinner',it:'Cena',
    venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
+
   {day:'fri',dl:'Friday 8 May',dlit:'Venerdì 8 Maggio',time:'09:00',
    en:'Breakfast with Presentation about China of Kathy Riklin',it:'Colazione con la Presentazione sulla Cina di Kathy Riklin',
    venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
+
   {day:'fri',dl:'Friday 8 May',dlit:'Venerdì 8 Maggio',time:'11:30',
    en:'Programme to follow',it:'Programma da confermare',
    venue:'Venue to follow',addr:'Luogo da confermare',
