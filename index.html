@@ -199,7 +199,7 @@ const EVENTS = [
    lat:45.4337,lng:12.3311,
    url:'https://maps.app.goo.gl/2Xd8YCUBfnrtvGNE8',ok:true},
 
-  {day:'tue',dl:'Tuesday 5 May',dlit:'Martedì 5 Maggio',time:'21:00',
+  {day:'tue',dl:'Tuesday 5 May',dlit:'Martedì 5 Maggio',time:'20:00',
    en:'Welcome Dinner',it:'Cena di Benvenuto',
    venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
 
@@ -208,8 +208,9 @@ const EVENTS = [
    venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
 
   {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'11:30',
-   en:'Guided Tour — International Exhibition',it:'Visita Guidata — Esposizione Internazionale',
-   venue:'Giardini & Arsenale',addr:'Giardini della Biennale, Venezia',
+   en:'Guided Tour — Giardini (Central Pavilion) — Meet 11:20 at Biennale Card Desk',
+   it:'Visita Guidata — Giardini (Padiglione Centrale) — Ritrovo 11:20 alla cassa',
+   venue:'Giardini & Arsenale',addr:'Biennale Card Desk, Giardini della Biennale, Venezia',
    lat:45.4289,lng:12.3601,url:'https://maps.google.com/?q=Giardini+della+Biennale,+Venice',ok:true},
 
   {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'14:00',endtime:'17:00',
@@ -222,11 +223,29 @@ const EVENTS = [
    venue:'Venue to follow',addr:'Luogo da confermare',
    lat:45.4341,lng:12.3388,url:null,ok:false,tent:true},
 
+  {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'17:00',endtime:'20:00',
+   en:'In Minor Keys — Alvaro Barrington',it:'In Minor Keys — Alvaro Barrington',
+   venue:'Hotel Metropole Garden',addr:'Riva degli Schiavoni 4149, Venezia',
+   lat:45.434139,lng:12.34525,
+   url:'https://maps.google.com/?q=Hotel+Metropole+Riva+degli+Schiavoni+4149+Venezia',ok:true},
+
+  {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'18:00',endtime:'00:00',
+   en:'Henrike Naumann & Sung Tieu — German Pavilion',it:'Henrike Naumann & Sung Tieu — Padiglione Tedesco',
+   venue:'Palazzo di Malta',addr:'Castello 3253, 30122 Venezia',
+   lat:45.4365072,lng:12.3460744,
+   url:'https://maps.app.goo.gl/Ry9XqVTAftN9SKRQ7',ok:true},
+
   {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'18:00',endtime:'23:00',
    en:'Spiral Economy — Private Viewing & Dinner',it:'Spiral Economy — Visione Privata & Cena',
    venue:'Museo Correr',addr:'Piazza San Marco 52, Venezia',
    lat:45.4340,lng:12.3380,
    url:'https://maps.google.com/?q=Museo+Correr+Piazza+San+Marco+52+Venezia',ok:true},
+
+  {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'19:00',
+   en:'Biennale della Parola — Alexander Sokurov',it:'Biennale della Parola — Alexander Sokurov',
+   venue:"Ca’ Giustinian — Sala delle Colonne",addr:'San Marco 1364/A, Venezia',
+   lat:45.4313,lng:12.3318,
+   url:'https://maps.google.com/?q=Ca+Giustinian+San+Marco+1364+Venezia',ok:true},
 
   {day:'wed',dl:'Wednesday 6 May',dlit:'Mercoledì 6 Maggio',time:'19:00',
    en:'Martha Graham Dance Company',it:'Martha Graham Dance Company',
@@ -257,14 +276,20 @@ const EVENTS = [
    venue:'Contemporary Forces',addr:'Venezia',
    lat:45.4267049,lng:12.3216101,url:'https://maps.app.goo.gl/dWXMjMUic4NzGtBw7',ok:true},
 
+  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'19:00',endtime:'20:00',
+   en:'Biennale della Parola — Suad Amiry',it:'Biennale della Parola — Suad Amiry',
+   venue:"Ca’ Giustinian — Sala delle Colonne",addr:'San Marco 1364/A, Venezia',
+   lat:45.4313,lng:12.3318,
+   url:'https://maps.google.com/?q=Ca+Giustinian+San+Marco+1364+Venezia',ok:true},
+
   {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'19:30',endtime:'24:00',
    en:'Swiss Arts Council Pro Helvetia',it:'Swiss Arts Council Pro Helvetia',
    venue:'San Servolo Island',addr:'Isola di San Servolo, Venezia',
    lat:45.41861,lng:12.35736,
    url:'https://maps.google.com/?q=San+Servolo+Island+Venice',ok:true},
 
-  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'22:00',
-   en:'Wind Down',it:'Rilassarsi',
+  {day:'thu',dl:'Thursday 7 May',dlit:'Giovedì 7 Maggio',time:'20:00',
+   en:'Dinner',it:'Cena',
    venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
 
   {day:'fri',dl:'Friday 8 May',dlit:'Venerdì 8 Maggio',time:'09:00',
@@ -272,9 +297,17 @@ const EVENTS = [
    venue:'Villa Perasto',addr:VP_ADDR,lat:VP_LAT,lng:VP_LNG,url:VP_URL,ok:true},
 
   {day:'fri',dl:'Friday 8 May',dlit:'Venerdì 8 Maggio',time:'11:30',
-   en:'Programme to follow',it:'Programma da confermare',
-   venue:'Venue to follow',addr:'Luogo da confermare',
-   lat:45.4341,lng:12.3388,url:null,ok:false,tent:true}
+   en:'Guided Tour — Arsenale (Corderie) — Meet 11:20, venue TBC',
+   it:'Visita Guidata — Arsenale (Corderie) — Ritrovo 11:20, luogo da confermare',
+   venue:'Corderie dell’Arsenale',addr:'Arsenale, Venezia (meeting point TBC)',
+   lat:45.4308,lng:12.3534,
+   url:'https://maps.google.com/?q=Corderie+Arsenale+Venezia',ok:false,tent:true},
+
+  {day:'fri',dl:'Friday 8 May',dlit:'Venerdì 8 Maggio',time:'19:00',endtime:'20:00',
+   en:'Biennale della Parola — Closing Evening',it:'Biennale della Parola — Serata di Chiusura',
+   venue:"Ca’ Giustinian — Sala delle Colonne",addr:'San Marco 1364/A, Venezia',
+   lat:45.4313,lng:12.3318,
+   url:'https://maps.google.com/?q=Ca+Giustinian+San+Marco+1364+Venezia',ok:true}
 ];
 
 // Group by venue
